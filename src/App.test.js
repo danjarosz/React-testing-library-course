@@ -45,3 +45,24 @@ it("should be able to type confirmed password", () => {
 
   expect(confirmPasswordInputElement.value).toBe("123abc");
 });
+
+it("should show email error message on invalid email", () => {
+  render(<App />);
+
+  const emailErrorElement = screen.queryByText(
+    /the email you input is invalid/i
+  );
+  const emailInputElement = screen.getByRole("textbox", {
+    name: /email/i,
+  });
+  const submitButtonElement = screen.getByRole("button", {
+    name: /submit/i,
+  });
+
+  expect(emailErrorElement).not.toBeInTheDocument();
+
+  userEvent.type(emailInputElement, "selenagmail.com");
+  userEvent.click(submitButtonElement);
+
+  expect(emailErrorElement).toBeInTheDocument();
+});
