@@ -64,5 +64,9 @@ it("should show email error message on invalid email", () => {
   userEvent.type(emailInputElement, "selenagmail.com");
   userEvent.click(submitButtonElement);
 
-  expect(emailErrorElement).toBeInTheDocument();
+  const emailErrorElementAfterClick = screen.queryByText(
+    /the email you input is invalid/i
+  );
+
+  expect(emailErrorElementAfterClick).toBeInTheDocument();
 });
