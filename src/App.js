@@ -25,6 +25,14 @@ function App() {
       const { email, password, confirmPassword } = singupInput;
       if (!validator.isEmail(email)) {
         setError("The email you input is invalid.");
+      } else if (password.length < 5) {
+        setError(
+          "The password you entered should contain 5 or more characters."
+        );
+      } else if (password !== confirmPassword) {
+        setError("The passwords don't match. Try again.");
+      } else {
+        setError("");
       }
     },
     [singupInput]
@@ -33,7 +41,7 @@ function App() {
   return (
     <div className="container my-5">
       <form onSubmit={handleFormSubmit}>
-        <div className="mp-3">
+        <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
           </label>
@@ -46,7 +54,7 @@ function App() {
             onChange={handleInputChange}
           />
         </div>
-        <div className="mp-3">
+        <div className="mb-3">
           <label htmlFor="password" className="form-label">
             Password
           </label>
@@ -59,7 +67,7 @@ function App() {
             onChange={handleInputChange}
           />
         </div>
-        <div className="mp-3">
+        <div className="mb-3">
           <label htmlFor="confirm-password" className="form-label">
             Confirm password
           </label>
@@ -72,10 +80,16 @@ function App() {
             onChange={handleInputChange}
           />
         </div>
-        {Boolean(error) && <p className="text-danger">{error}</p>}
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
+        {Boolean(error) && (
+          <div className="mb-3">
+            <p className="text-danger">{error}</p>
+          </div>
+        )}
+        <div className="mb-3">
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
