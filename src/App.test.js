@@ -147,3 +147,36 @@ it("should show confirm password error if password and confirmed password are di
   );
   expect(confirmPasswordErrorElementAfterThirdClick).toBeInTheDocument();
 });
+
+it("should not display any error message if all inputs are valid", () => {
+  render(<App />);
+
+  const emailInputElement = screen.getByRole("textbox", {
+    name: /email/i,
+  });
+  const passwordInputElement = screen.getByLabelText("Password");
+  const confirmPasswordInputElement =
+    screen.getByLabelText(/confirm password/i);
+  const submitButtonElement = screen.getByRole("button", {
+    name: /submit/i,
+  });
+
+  userEvent.type(emailInputElement, "tester@user.com");
+  userEvent.type(passwordInputElement, "qwerty");
+  userEvent.type(confirmPasswordInputElement, "qwerty");
+  userEvent.click(submitButtonElement);
+
+  const emailErrorElement = screen.queryByText(
+    /the email you input is invalid/i
+  );
+  const passwordErrorElement = screen.queryByText(
+    /the password you entered should contain 5 or more characters/i
+  );
+  const confirmPasswordErrorElement = screen.queryByText(
+    /the passwords don't match. Try again/i
+  );
+
+  expect(emailErrorElement).not.toBeInTheDocument();
+  expect(passwordErrorElement).not.toBeInTheDocument();
+  expect(confirmPasswordErrorElement).not.toBeInTheDocument();
+});
