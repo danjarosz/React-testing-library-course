@@ -30,6 +30,13 @@ const typeIntoForm = ({ email, password, confirmPassword }) => {
   };
 };
 
+const clickSubmitButton = () => {
+  const submitButtonElement = screen.getByRole("button", {
+    name: /submit/i,
+  });
+  userEvent.click(submitButtonElement);
+};
+
 // hooks
 beforeEach(() => {
   // eslint-disable-next-line testing-library/no-render-in-setup
@@ -75,14 +82,11 @@ it("should show email error message on invalid email", () => {
   const emailErrorElement = screen.queryByText(
     /the email you input is invalid/i
   );
-  const submitButtonElement = screen.getByRole("button", {
-    name: /submit/i,
-  });
 
   expect(emailErrorElement).not.toBeInTheDocument();
 
   typeIntoForm({ email: "selenagmail.com" });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const emailErrorElementAfterClick = screen.queryByText(
     /the email you input is invalid/i
@@ -95,16 +99,13 @@ it("should show password error if it has less than 5 characters", () => {
   const passwordErrorElement = screen.queryByText(
     /the password you entered should contain 5 or more characters/i
   );
-  const submitButtonElement = screen.getByRole("button", {
-    name: /submit/i,
-  });
 
   expect(passwordErrorElement).not.toBeInTheDocument();
 
   typeIntoForm({
     password: "1234",
   });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const passwordErrorElementAfterFirstClick = screen.queryByText(
     /the password you entered should contain 5 or more characters/i
@@ -112,7 +113,7 @@ it("should show password error if it has less than 5 characters", () => {
   expect(passwordErrorElementAfterFirstClick).not.toBeInTheDocument();
 
   typeIntoForm({ email: "some@validemail.com" });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const passwordErrorElementAfterSecondClick = screen.queryByText(
     /the password you entered should contain 5 or more characters/i
@@ -124,14 +125,11 @@ it("should show confirm password error if password and confirmed password are di
   const confirmPasswordErrorElement = screen.queryByText(
     /the passwords don't match. Try again/i
   );
-  const submitButtonElement = screen.getByRole("button", {
-    name: /submit/i,
-  });
 
   expect(confirmPasswordErrorElement).not.toBeInTheDocument();
 
   typeIntoForm({ email: "some@validemail.com" });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const confirmPasswordErrorElementAfterFirstClick = screen.queryByText(
     /the passwords don't match. Try again/i
@@ -139,7 +137,7 @@ it("should show confirm password error if password and confirmed password are di
   expect(confirmPasswordErrorElementAfterFirstClick).not.toBeInTheDocument();
 
   typeIntoForm({ password: "1234" });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const confirmPasswordErrorElementAfterSecondClick = screen.queryByText(
     /the passwords don't match. Try again/i
@@ -147,7 +145,7 @@ it("should show confirm password error if password and confirmed password are di
   expect(confirmPasswordErrorElementAfterSecondClick).not.toBeInTheDocument();
 
   typeIntoForm({ password: "5", confirmPassword: "1234" });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const confirmPasswordErrorElementAfterThirdClick = screen.queryByText(
     /the passwords don't match. Try again/i
@@ -156,15 +154,12 @@ it("should show confirm password error if password and confirmed password are di
 });
 
 it("should not display any error message if all inputs are valid", () => {
-  const submitButtonElement = screen.getByRole("button", {
-    name: /submit/i,
-  });
   typeIntoForm({
     email: "tester@user.com",
     password: "qwerty",
     confirmPassword: "qwerty",
   });
-  userEvent.click(submitButtonElement);
+  clickSubmitButton();
 
   const emailErrorElement = screen.queryByText(
     /the email you input is invalid/i
