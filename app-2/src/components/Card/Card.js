@@ -11,7 +11,7 @@ const Card = ({ name, phone, email, image, favoured }) => {
   }, []);
 
   return (
-    <div className={classes["card"]}>
+    <article className={classes["card"]}>
       <div className={classes["card-header"]}>
         <img
           src={image.url}
@@ -31,7 +31,7 @@ const Card = ({ name, phone, email, image, favoured }) => {
         <p>{phone}</p>
         <p>{email}</p>
       </div>
-    </div>
+    </article>
   );
 };
 
