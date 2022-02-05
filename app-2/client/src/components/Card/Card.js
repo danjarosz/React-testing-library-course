@@ -1,14 +1,28 @@
 import classes from "./Card.module.css";
 import heartFilled from "../../svgs/heartFilled.svg";
 import heartOutlined from "../../svgs/heartOutlined.svg";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
+import {PetsContext} from "../Pets/Pets";
 
-const Card = ({ id, name, phone, email, image, favoured, updateFavourite }) => {
-  const [isFavoured, setIsFavoured] = useState(favoured);
+const Card = ({ id, name, phone, email, image, favoured }) => {
+    const { setCats } = useContext(PetsContext);
+    const [isFavoured, setIsFavoured] = useState(favoured);
+
+    const updateFavourite = (id, favoured) => {
+        setCats((currentCats) => {
+            const index = currentCats.findIndex(cat => cat.id === id);
+            const updatedCats = [...currentCats];
+            updatedCats[index] = {
+                ...updatedCats[index],
+                favoured
+            }
+            return updatedCats;
+        });
+    }
 
   const toggleFavoured = useCallback(() => {
       setIsFavoured((prev) => !prev);
-  }, []);
+  }, [setIsFavoured]);
 
   useEffect(() => {
       updateFavourite(id, isFavoured);
