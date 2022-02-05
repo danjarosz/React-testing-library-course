@@ -1,14 +1,18 @@
 import classes from "./Card.module.css";
 import heartFilled from "../../svgs/heartFilled.svg";
 import heartOutlined from "../../svgs/heartOutlined.svg";
-import { useCallback, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 
-const Card = ({ name, phone, email, image, favoured }) => {
+const Card = ({ id, name, phone, email, image, favoured, updateFavourite }) => {
   const [isFavoured, setIsFavoured] = useState(favoured);
 
   const toggleFavoured = useCallback(() => {
-    setIsFavoured((prev) => !prev);
+      setIsFavoured((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+      updateFavourite(id, isFavoured);
+  }, [isFavoured, id])
 
   return (
     <article className={classes["card"]}>

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import Card from "../Card";
 
 const cardProps = {
+  id: "1",
   name: "Sidney",
   phone: "111-111-1111",
   email: "laith@hotmail.com",
@@ -11,6 +12,7 @@ const cardProps = {
     alt: "cute cat",
   },
   favoured: false,
+  updateFavourite: () => {}
 };
 
 describe("Card component", () => {

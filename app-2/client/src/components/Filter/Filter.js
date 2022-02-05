@@ -9,6 +9,12 @@ const Filter = ({filters, setFilters}) => {
           name="favourite"
           id="favourite"
           className={classes["form-select"]}
+          onChange={(e) => setFilters(prev => (
+              {
+                ...prev,
+                favourite: e.target.value
+              }
+          ))}
         >
           <option value="any">Any</option>
           <option value="favourite">Favourite</option>

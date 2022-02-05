@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react";
+import { screen, within, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
@@ -50,6 +50,33 @@ describe("Pets", () => {
 
         expect(screen.getAllByRole("article")).toStrictEqual([
             cards[0],
+            cards[2],
+            cards[4]
+        ]);
+    });
+
+    it ("should filter for favoured cats", async () => {
+        const cards = await screen.findAllByRole("article");
+        userEvent.click(within(cards[0]).getByRole("button"));
+        userEvent.click(within(cards[3]).getByRole("button"));
+
+        userEvent.selectOptions(screen.getByLabelText(/favourite/i), "favourite");
+
+        expect(screen.getAllByRole("article")).toStrictEqual([
+            cards[0],
+            cards[3]
+        ]);
+    });
+
+    it ("should filter for not favoured cats", async () => {
+        const cards = await screen.findAllByRole("article");
+        userEvent.click(within(cards[0]).getByRole("button"));
+        userEvent.click(within(cards[3]).getByRole("button"));
+
+        userEvent.selectOptions(screen.getByLabelText(/favourite/i), "not favourite");
+
+        expect(screen.getAllByRole("article")).toStrictEqual([
+            cards[1],
             cards[2],
             cards[4]
         ]);
